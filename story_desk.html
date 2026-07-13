@@ -77,6 +77,21 @@
   #sd-root .new-story-btn:hover { background: var(--thread-soft); }
   #sd-root .new-story-btn:active { transform: scale(0.97); }
 
+  #sd-root .search-input {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--paper);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    outline: none;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+  #sd-root .search-input::placeholder { color: var(--muted-2); }
+  #sd-root .search-input:focus { border-color: var(--gold); }
+
   #sd-root .story-list {
     flex: 1;
     overflow-y: auto;
@@ -203,6 +218,49 @@
     padding: 4px 2px;
   }
   #sd-root .title-input::placeholder { color: #c8bfa5; }
+  #sd-root .export-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--paper-line);
+    background: transparent;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  #sd-root .export-btn svg { width: 15px; height: 15px; }
+  #sd-root .export-btn:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+  #sd-root .export-menu {
+    position: absolute;
+    width: 220px;
+    background: var(--paper);
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    border: 1px solid var(--paper-line);
+    padding: 6px;
+    z-index: 15;
+  }
+  #sd-root .export-menu button {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    border: none;
+    background: transparent;
+    border-radius: 7px;
+    padding: 9px 10px;
+    cursor: pointer;
+    text-align: left;
+  }
+  #sd-root .export-menu button:hover { background: #f2ead6; }
+  #sd-root .export-menu-title { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+  #sd-root .export-menu-sub { font-size: 10.5px; color: var(--ink-soft); }
   #sd-root .save-state {
     font-size: 11px;
     color: var(--muted-2);
@@ -406,6 +464,16 @@
   #sd-root .edit-title-input:focus,
   #sd-root .edit-content-input:focus { border-color: var(--gold); }
   #sd-root .edit-content-input { resize: vertical; line-height: 1.7; }
+  #sd-root .color-swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  #sd-root .color-swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+  #sd-root .color-swatch.selected { border-color: var(--ink); box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--ink); }
   #sd-root .confirm-save { background: var(--ink); color: var(--paper); }
   #sd-root .confirm-save:hover { background: #3a3f4d; }
 
@@ -436,21 +504,22 @@
     transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
   #sd-root .composer-pill.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  #sd-root .composer-pill .pill-del {
+  #sd-root .composer-pill .pill-del,
+  #sd-root .composer-pill .pill-edit {
     display: none;
     position: absolute;
     top: -6px;
-    right: -6px;
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: var(--thread);
-    color: #fff;
     font-size: 10px;
     line-height: 16px;
     text-align: center;
   }
-  #sd-root .composer-pill:hover .pill-del { display: block; }
+  #sd-root .composer-pill .pill-del { right: -6px; background: var(--thread); color: #fff; }
+  #sd-root .composer-pill .pill-edit { right: 14px; background: var(--gold); color: #fff; font-size: 9px; }
+  #sd-root .composer-pill:hover .pill-del,
+  #sd-root .composer-pill:hover .pill-edit { display: block; }
   #sd-root .composer-add-pill { border: 1px dashed #c9bd9a; background: transparent; color: var(--ink-soft); }
   #sd-root .composer-add-pill:hover { border-color: var(--thread); color: var(--thread); }
   #sd-root .composer-add-input {
@@ -579,6 +648,108 @@
     padding: 6px 0 14px 0;
   }
 
+  /* ---------- Reorder toolbar ---------- */
+  #sd-root .reorder-toolbar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 34px;
+    border-bottom: 1px solid var(--paper-line);
+    background: #f4efe0;
+  }
+  #sd-root .write-toggle {
+    display: flex;
+    background: #efe8d4;
+    border-radius: 20px;
+    padding: 3px;
+    flex-shrink: 0;
+  }
+  #sd-root .write-toggle button {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 700;
+    color: var(--ink-soft);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  #sd-root .write-toggle button.active { background: var(--ink); color: var(--paper); }
+  #sd-root .undo-redo-group { display: flex; align-items: center; gap: 6px; }
+  #sd-root .undo-redo-group button {
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    border: 1px solid var(--paper-line);
+    background: var(--paper);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  #sd-root .undo-redo-group button svg { width: 15px; height: 15px; }
+  #sd-root .undo-redo-group button:hover:not(:disabled) { background: var(--gold); color: #fff; border-color: var(--gold); }
+  #sd-root .undo-redo-group button:disabled { opacity: 0.35; cursor: not-allowed; }
+  #sd-root .reorder-hint { font-size: 11px; color: var(--ink-soft); }
+
+  /* ---------- Script rows: reorder mode ---------- */
+  #sd-root .script-row.reorder-row {
+    align-items: center;
+    background: var(--paper);
+    border-radius: 6px;
+    padding: 8px 10px 8px 10px;
+    cursor: grab;
+  }
+  #sd-root .script-row.reorder-row.dragging { opacity: 0.4; }
+  #sd-root .script-row.reorder-row.drag-over { box-shadow: 0 -2px 0 0 var(--thread) inset; }
+  #sd-root .drag-handle {
+    color: var(--muted-2);
+    font-size: 14px;
+    letter-spacing: -1px;
+    flex-shrink: 0;
+    user-select: none;
+    padding: 0 2px;
+  }
+  #sd-root .reorder-row .row-speaker {
+    width: 90px;
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  #sd-root .reorder-row .row-preview {
+    flex: 1;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #sd-root .row-move-group { display: flex; gap: 4px; flex-shrink: 0; }
+  #sd-root .row-move-group button {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    border: 1px solid var(--paper-line);
+    background: #fff;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  #sd-root .row-move-group button:hover:not(:disabled) { border-color: var(--thread); color: var(--thread); }
+  #sd-root .row-move-group button:disabled { opacity: 0.3; cursor: not-allowed; }
+  #sd-root .row-move-group svg { width: 12px; height: 12px; }
+  #sd-root .composer.disabled-during-reorder { opacity: 0.5; pointer-events: none; }
+
   /* ---------- Confirm modal ---------- */
   #sd-root .confirm-overlay {
     position: absolute;
@@ -637,6 +808,7 @@
     <p class="brand display">物語机</p>
     <p class="brand-sub">MONOGATARI DESK</p>
     <button class="new-story-btn" id="sd-new-btn">＋ 新しい物語をはじめる</button>
+    <input type="text" class="search-input" id="sd-search" placeholder="🔍 タイトル・セリフを検索" />
     <div class="story-list" id="sd-story-list"></div>
   </aside>
 
@@ -657,6 +829,7 @@
   let aiLoading = false;
   let aiText = '';
   let aiErr = '';
+  let searchQuery = '';
 
   const CHAR_COLORS = ['#7c3f58', '#2e6f6e', '#b5651d', '#5b6eae', '#8a6d3b', '#4c7a3d', '#a0447a', '#3e6b87'];
 
@@ -725,6 +898,7 @@
       if (!s.mode) s.mode = 'manuscript';
       if (!s.characters) s.characters = [];
       if (!s.lines) s.lines = [];
+      s.characters.forEach(c => { if (c.memo === undefined) c.memo = ''; });
     });
   }
 
@@ -745,7 +919,22 @@
       listEl.appendChild(p);
       return;
     }
-    const sorted = [...stories].sort((a,b) => b.updatedAt - a.updatedAt);
+    const q = searchQuery.trim().toLowerCase();
+    let filtered = stories;
+    if (q) {
+      filtered = stories.filter(story => {
+        const haystack = (story.title + '\n' + (story.content || '') + '\n' + getStoryText(story)).toLowerCase();
+        return haystack.includes(q);
+      });
+    }
+    if (filtered.length === 0) {
+      const p = document.createElement('div');
+      p.className = 'empty-list';
+      p.textContent = '「' + searchQuery + '」に一致する物語が見つからなかったよ。';
+      listEl.appendChild(p);
+      return;
+    }
+    const sorted = [...filtered].sort((a,b) => b.updatedAt - a.updatedAt);
     sorted.forEach(story => {
       const card = document.createElement('div');
       card.className = 'story-card' + (story.id === currentId ? ' active' : '');
@@ -837,6 +1026,9 @@
     editorArea.innerHTML = `
       <div class="editor-topbar">
         <input class="title-input" id="sd-title" placeholder="物語のタイトル" />
+        <button class="export-btn" id="sd-export-btn" title="テキストファイルとして書き出す">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
         <span class="save-state" id="sd-save-state">保存済み</span>
       </div>
       <div id="sd-content-area"></div>
@@ -868,6 +1060,11 @@
 
     renderContentArea(story);
 
+    document.getElementById('sd-export-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      showExportMenu(story, e.currentTarget);
+    });
+
     const drawer = document.getElementById('sd-ai-drawer');
     if (aiOpen) drawer.classList.add('open');
     document.getElementById('sd-ai-toggle').addEventListener('click', () => {
@@ -889,11 +1086,150 @@
     const area = document.getElementById('sd-content-area');
     if (!area) return;
     area.innerHTML = `
+      <div class="reorder-toolbar" id="sd-reorder-toolbar"></div>
       <div class="script-wrap" id="sd-script-wrap"></div>
       <div class="composer" id="sd-composer"></div>
     `;
+    renderReorderToolbar(story);
     renderScriptRows(story);
     renderComposer(story);
+  }
+
+  function renderReorderToolbar(story) {
+    const bar = document.getElementById('sd-reorder-toolbar');
+    if (!bar) return;
+    bar.innerHTML = '';
+
+    const toggle = document.createElement('div');
+    toggle.className = 'write-toggle';
+    const writeBtn = document.createElement('button');
+    writeBtn.type = 'button';
+    writeBtn.textContent = '書く';
+    writeBtn.className = isReorderMode(story) ? '' : 'active';
+    const reorderBtn = document.createElement('button');
+    reorderBtn.type = 'button';
+    reorderBtn.textContent = '並び替え';
+    reorderBtn.className = isReorderMode(story) ? 'active' : '';
+    writeBtn.addEventListener('click', () => {
+      reorderModeByStory[story.id] = false;
+      renderContentArea(story);
+    });
+    reorderBtn.addEventListener('click', () => {
+      reorderModeByStory[story.id] = true;
+      renderContentArea(story);
+    });
+    toggle.appendChild(writeBtn);
+    toggle.appendChild(reorderBtn);
+    bar.appendChild(toggle);
+
+    const h = getHistory(story.id);
+    const group = document.createElement('div');
+    group.className = 'undo-redo-group';
+    group.innerHTML = `
+      <button type="button" class="undo-btn" title="元に戻す (Ctrl+Z)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M3 13a9 9 0 1 0 3-7"/></svg>
+      </button>
+      <button type="button" class="redo-btn" title="やり直す (Ctrl+Shift+Z)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M21 13a9 9 0 1 1-3-7"/></svg>
+      </button>
+      ${isReorderMode(story) ? '<span class="reorder-hint">ドラッグか▲▼で並び替え</span>' : ''}
+    `;
+    group.querySelector('.undo-btn').disabled = h.undo.length === 0;
+    group.querySelector('.redo-btn').disabled = h.redo.length === 0;
+    group.querySelector('.undo-btn').addEventListener('click', () => undoReorder(story));
+    group.querySelector('.redo-btn').addEventListener('click', () => redoReorder(story));
+    bar.appendChild(group);
+  }
+
+  function downloadFile(filename, content, mime) {
+    try {
+      const blob = new Blob([content], { type: mime + ';charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (e) {
+      console.error('エクスポートに失敗しました', e);
+    }
+  }
+
+  function exportStoryTxt(story) {
+    const title = story.title || '無題の物語';
+    let text = `${title}\n${'='.repeat(Math.min(title.length * 2, 40))}\n\n`;
+    if (story.content) {
+      text += `【あらすじ・メモ】\n${story.content}\n\n`;
+    }
+    if (story.characters.length > 0) {
+      text += `【登場人物】\n`;
+      story.characters.forEach(c => {
+        text += `・${c.name}${c.memo ? `：${c.memo}` : ''}\n`;
+      });
+      text += '\n';
+    }
+    text += `【本文】\n${getStoryText(story) || '(まだ本文が書かれていません)'}\n`;
+    downloadFile(`${title}.txt`, text, 'text/plain');
+  }
+
+  function csvField(value) {
+    const s = String(value == null ? '' : value);
+    if (/[",\n]/.test(s)) {
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+    return s;
+  }
+
+  function exportStoryCsv(story) {
+    const title = story.title || '無題の物語';
+    const rows = [['キャラ名', 'セリフ']];
+    story.lines.forEach(line => {
+      const speaker = story.characters.find(c => c.id === line.speakerId);
+      rows.push([speaker ? speaker.name : '？', line.text || '']);
+    });
+    const csv = rows.map(r => r.map(csvField).join(',')).join('\r\n');
+    // Excelで文字化けしないようUTF-8のBOMを付与
+    downloadFile(`${title}_台本.csv`, '\uFEFF' + csv, 'text/csv');
+  }
+
+  function showExportMenu(story, anchorBtn) {
+    document.querySelectorAll('.export-menu').forEach(m => m.remove());
+    const menu = document.createElement('div');
+    menu.className = 'export-menu';
+    menu.innerHTML = `
+      <button type="button" data-kind="txt">
+        <span class="export-menu-title">テキスト形式</span>
+        <span class="export-menu-sub">.txt / あらすじ・キャラ含む</span>
+      </button>
+      <button type="button" data-kind="csv">
+        <span class="export-menu-title">スプレッドシート用 CSV</span>
+        <span class="export-menu-sub">.csv / A列:キャラ名 B列:セリフ</span>
+      </button>
+    `;
+    menu.querySelector('[data-kind="txt"]').addEventListener('click', () => {
+      exportStoryTxt(story);
+      menu.remove();
+    });
+    menu.querySelector('[data-kind="csv"]').addEventListener('click', () => {
+      exportStoryCsv(story);
+      menu.remove();
+    });
+    root.appendChild(menu);
+
+    const btnRect = anchorBtn.getBoundingClientRect();
+    const rootRect = root.getBoundingClientRect();
+    menu.style.top = (btnRect.bottom - rootRect.top + 6) + 'px';
+    menu.style.right = (rootRect.right - btnRect.right) + 'px';
+
+    function outsideClick(e) {
+      if (!menu.contains(e.target) && e.target !== anchorBtn) {
+        menu.remove();
+        document.removeEventListener('click', outsideClick);
+      }
+    }
+    setTimeout(() => document.addEventListener('click', outsideClick), 0);
   }
 
   function showEditStoryModal(story) {
@@ -936,6 +1272,61 @@
     titleInput.focus();
   }
 
+  function showEditCharacterModal(story, character) {
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-overlay';
+    overlay.innerHTML = `
+      <div class="confirm-box edit-box">
+        <h4 class="edit-box-title">キャラを編集</h4>
+        <label class="edit-label">名前</label>
+        <input type="text" class="edit-title-input" maxlength="20" />
+        <label class="edit-label">色</label>
+        <div class="color-swatches"></div>
+        <label class="edit-label">詳細メモ（性格・口調・見た目など）</label>
+        <textarea class="edit-content-input" rows="5" placeholder="例：明るく元気な口調。語尾に「〜だよ」をつけがち。赤い髪の少女。"></textarea>
+        <div class="confirm-actions">
+          <button class="confirm-cancel" type="button">キャンセル</button>
+          <button class="confirm-save" type="button">保存する</button>
+        </div>
+      </div>
+    `;
+    const nameInput = overlay.querySelector('.edit-title-input');
+    const memoInput = overlay.querySelector('.edit-content-input');
+    const swatchWrap = overlay.querySelector('.color-swatches');
+    nameInput.value = character.name;
+    memoInput.value = character.memo || '';
+
+    let selectedColor = character.color;
+    CHAR_COLORS.forEach(color => {
+      const sw = document.createElement('button');
+      sw.type = 'button';
+      sw.className = 'color-swatch' + (color === selectedColor ? ' selected' : '');
+      sw.style.background = color;
+      sw.addEventListener('click', () => {
+        selectedColor = color;
+        swatchWrap.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+        sw.classList.add('selected');
+      });
+      swatchWrap.appendChild(sw);
+    });
+
+    function close() { overlay.remove(); }
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    overlay.querySelector('.confirm-cancel').addEventListener('click', close);
+    overlay.querySelector('.confirm-save').addEventListener('click', () => {
+      const name = nameInput.value.trim();
+      if (name) character.name = name;
+      character.memo = memoInput.value;
+      character.color = selectedColor;
+      scheduleSave();
+      close();
+      renderScriptRows(story);
+      renderComposer(story);
+    });
+    root.appendChild(overlay);
+    nameInput.focus();
+  }
+
   function showConfirm(message, quote, onConfirm) {
     const overlay = document.createElement('div');
     overlay.className = 'confirm-overlay';
@@ -967,11 +1358,81 @@
   }
 
   const activeSpeakerByStory = {};
+  const reorderModeByStory = {};
+  const historyByStory = {};
+
+  function isReorderMode(story) {
+    return !!reorderModeByStory[story.id];
+  }
+
+  function getHistory(storyId) {
+    if (!historyByStory[storyId]) historyByStory[storyId] = { undo: [], redo: [] };
+    return historyByStory[storyId];
+  }
+
+  function pushHistory(story) {
+    const h = getHistory(story.id);
+    h.undo.push(JSON.parse(JSON.stringify(story.lines)));
+    if (h.undo.length > 50) h.undo.shift();
+    h.redo = [];
+  }
+
+  function undoReorder(story) {
+    const h = getHistory(story.id);
+    if (h.undo.length === 0) return;
+    h.redo.push(JSON.parse(JSON.stringify(story.lines)));
+    story.lines = h.undo.pop();
+    scheduleSave();
+    renderScriptRows(story);
+    renderReorderToolbar(story);
+  }
+
+  function redoReorder(story) {
+    const h = getHistory(story.id);
+    if (h.redo.length === 0) return;
+    h.undo.push(JSON.parse(JSON.stringify(story.lines)));
+    story.lines = h.redo.pop();
+    scheduleSave();
+    renderScriptRows(story);
+    renderReorderToolbar(story);
+  }
+
+  function moveLine(story, index, direction) {
+    const target = index + direction;
+    if (target < 0 || target >= story.lines.length) return;
+    pushHistory(story);
+    const arr = story.lines;
+    [arr[index], arr[target]] = [arr[target], arr[index]];
+    scheduleSave();
+    renderScriptRows(story);
+    renderReorderToolbar(story);
+  }
+
+  function reorderLinesDrag(story, fromIndex, toIndex) {
+    if (fromIndex === toIndex) return;
+    pushHistory(story);
+    const arr = story.lines;
+    const [moved] = arr.splice(fromIndex, 1);
+    arr.splice(toIndex, 0, moved);
+    scheduleSave();
+    renderScriptRows(story);
+    renderReorderToolbar(story);
+  }
 
   function renderComposer(story) {
     const box = document.getElementById('sd-composer');
     if (!box) return;
     box.innerHTML = '';
+    box.classList.toggle('disabled-during-reorder', isReorderMode(story));
+
+    if (isReorderMode(story)) {
+      const note = document.createElement('div');
+      note.className = 'composer-hint';
+      note.style.marginBottom = '0';
+      note.textContent = '並び替え中はセリフの追加・編集はできません。「書く」に戻すと再開できるよ。';
+      box.appendChild(note);
+      return;
+    }
 
     if (activeSpeakerByStory[story.id] && !story.characters.find(c => c.id === activeSpeakerByStory[story.id])) {
       delete activeSpeakerByStory[story.id];
@@ -987,12 +1448,16 @@
       const pill = document.createElement('button');
       pill.type = 'button';
       pill.className = 'composer-pill' + (activeSpeakerByStory[story.id] === c.id ? ' active' : '');
-      pill.innerHTML = `<span></span><span class="pill-del" title="キャラを削除">×</span>`;
+      pill.innerHTML = `<span></span><span class="pill-edit" title="キャラを編集">✎</span><span class="pill-del" title="キャラを削除">×</span>`;
       pill.querySelector('span').textContent = c.name;
       pill.addEventListener('click', (e) => {
-        if (e.target.closest('.pill-del')) return;
+        if (e.target.closest('.pill-del') || e.target.closest('.pill-edit')) return;
         activeSpeakerByStory[story.id] = c.id;
         renderComposer(story);
+      });
+      pill.querySelector('.pill-edit').addEventListener('click', (e) => {
+        e.stopPropagation();
+        showEditCharacterModal(story, c);
       });
       pill.querySelector('.pill-del').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -1023,7 +1488,7 @@
       function commit() {
         const name = input.value.trim();
         if (name) {
-          const newChar = { id: uid(), name, color: nextColor(story) };
+          const newChar = { id: uid(), name, color: nextColor(story), memo: '' };
           story.characters.push(newChar);
           activeSpeakerByStory[story.id] = newChar.id;
           scheduleSave();
@@ -1061,10 +1526,12 @@
       const text = textInput.value.trim();
       const speakerId = activeSpeakerByStory[story.id];
       if (!text || !speakerId) return;
+      pushHistory(story);
       story.lines.push({ id: uid(), speakerId, text });
       textInput.value = '';
       scheduleSave();
       renderScriptRows(story);
+      renderReorderToolbar(story);
       textInput.focus();
     }
     sendBtn.addEventListener('click', submitLine);
@@ -1078,18 +1545,78 @@
     el.style.height = el.scrollHeight + 'px';
   }
 
+  let dragFromIndex = null;
+
   function renderScriptRows(story) {
     const wrap = document.getElementById('sd-script-wrap');
     if (!wrap) return;
     wrap.innerHTML = '';
+    const reorder = isReorderMode(story);
 
     if (story.lines.length === 0) {
       const empty = document.createElement('div');
       empty.className = 'script-empty';
       empty.textContent = story.characters.length === 0
         ? 'まずは下でキャラを登録してから、セリフを追加しよう（ナレーター役のキャラを作ってもOK）。'
-        : '下の入力欄からキャラを選んで送信すると、セリフが追加されるよ。';
+        : reorder
+          ? 'まだセリフがないよ。「書く」モードに切り替えて追加してみて。'
+          : '下の入力欄からキャラを選んで送信すると、セリフが追加されるよ。';
       wrap.appendChild(empty);
+      return;
+    }
+
+    if (reorder) {
+      story.lines.forEach((line, index) => {
+        const speaker = story.characters.find(c => c.id === line.speakerId);
+        const row = document.createElement('div');
+        row.className = 'script-row reorder-row';
+        row.draggable = true;
+        row.style.borderLeftColor = speaker ? speaker.color : '#d8cfb4';
+        row.innerHTML = `
+          <span class="drag-handle">⋮⋮</span>
+          <span class="row-speaker"></span>
+          <span class="row-preview"></span>
+          <div class="row-move-group">
+            <button type="button" class="move-up" title="上に移動">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+            </button>
+            <button type="button" class="move-down" title="下に移動">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
+        `;
+        row.querySelector('.row-speaker').textContent = speaker ? speaker.name : '？';
+        row.querySelector('.row-preview').textContent = line.text || '(空のセリフ)';
+        row.querySelector('.move-up').disabled = index === 0;
+        row.querySelector('.move-down').disabled = index === story.lines.length - 1;
+        row.querySelector('.move-up').addEventListener('click', () => moveLine(story, index, -1));
+        row.querySelector('.move-down').addEventListener('click', () => moveLine(story, index, 1));
+
+        row.addEventListener('dragstart', (e) => {
+          dragFromIndex = index;
+          row.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+        });
+        row.addEventListener('dragend', () => {
+          row.classList.remove('dragging');
+          wrap.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        });
+        row.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          row.classList.add('drag-over');
+        });
+        row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+        row.addEventListener('drop', (e) => {
+          e.preventDefault();
+          row.classList.remove('drag-over');
+          if (dragFromIndex === null) return;
+          reorderLinesDrag(story, dragFromIndex, index);
+          dragFromIndex = null;
+        });
+
+        wrap.appendChild(row);
+      });
+      return;
     }
 
     story.lines.forEach(line => {
@@ -1136,9 +1663,11 @@
 
       row.querySelector('.row-del').addEventListener('click', () => {
         showConfirm('このセリフを削除しますか？', line.text, () => {
+          pushHistory(story);
           story.lines = story.lines.filter(l => l.id !== line.id);
           scheduleSave();
           renderScriptRows(story);
+          renderReorderToolbar(story);
         });
       });
 
@@ -1165,18 +1694,24 @@
     out.innerHTML = `<span class="placeholder">相談したい内容のボタンを押すと、書いている物語を読んだ上でAIが提案してくれるよ。</span>`;
   }
 
+  function getCastContext(story) {
+    const withMemo = story.characters.filter(c => c.memo && c.memo.trim());
+    if (withMemo.length === 0) return '';
+    return '【登場人物メモ】\n' + withMemo.map(c => `・${c.name}：${c.memo}`).join('\n') + '\n\n';
+  }
+
   const PROMPTS = {
-    continue: (t, c) => `あなたは創作の相談相手です。以下は「${t || '無題の物語'}」というタイトルの、書きかけの物語です。この続きの展開のアイデアを3つ、それぞれ2〜3文程度の短い提案として日本語で出してください。番号付きで、各案の雰囲気の違いが分かるようにしてください。本文がまだ短い、または空の場合は、書き出しの案を3つ提案してください。
+    continue: (t, c, cast) => `あなたは創作の相談相手です。以下は「${t || '無題の物語'}」というタイトルの、書きかけの物語です。この続きの展開のアイデアを3つ、それぞれ2〜3文程度の短い提案として日本語で出してください。番号付きで、各案の雰囲気の違いが分かるようにしてください。本文がまだ短い、または空の場合は、書き出しの案を3つ提案してください。
 
----物語の本文---
+${cast}---物語の本文---
 ${c || '(まだ本文が書かれていません)'}`,
-    polish: (t, c) => `あなたは創作の相談相手です。以下は「${t || '無題の物語'}」というタイトルの物語の本文です。文章表現をより魅力的で自然な日本語にするための具体的な提案を、3〜5点ほど箇条書きで日本語で出してください。元の文の一部を引用しつつ、どう直すと良くなるか分かるように書いてください。本文が空の場合は、文章をブラッシュアップする際に一般的に気をつけると良いポイントを教えてください。
+    polish: (t, c, cast) => `あなたは創作の相談相手です。以下は「${t || '無題の物語'}」というタイトルの物語の本文です。文章表現をより魅力的で自然な日本語にするための具体的な提案を、3〜5点ほど箇条書きで日本語で出してください。元の文の一部を引用しつつ、どう直すと良くなるか分かるように書いてください。本文が空の場合は、文章をブラッシュアップする際に一般的に気をつけると良いポイントを教えてください。
 
----物語の本文---
+${cast}---物語の本文---
 ${c || '(まだ本文が書かれていません)'}`,
-    character: (t, c) => `あなたは創作の相談相手です。以下は「${t || '無題の物語'}」というタイトルの、書きかけの物語です。この物語に合いそうなキャラクターや世界観・設定のアイデアを3つ、日本語で提案してください。それぞれ簡潔に、名前や特徴、物語にどう絡められそうかを含めてください。本文がまだ短い、または空の場合は、幅広いジャンルを想定した設定のアイデアを提案してください。
+    character: (t, c, cast) => `あなたは創作の相談相手です。以下は「${t || '無題の物語'}」というタイトルの、書きかけの物語です。この物語に合いそうなキャラクターや世界観・設定のアイデアを3つ、日本語で提案してください。それぞれ簡潔に、名前や特徴、物語にどう絡められそうかを含めてください。本文がまだ短い、または空の場合は、幅広いジャンルを想定した設定のアイデアを提案してください。
 
----物語の本文---
+${cast}---物語の本文---
 ${c || '(まだ本文が書かれていません)'}`
   };
 
@@ -1190,7 +1725,7 @@ ${c || '(まだ本文が書かれていません)'}`
     document.querySelectorAll('.ai-btn').forEach(b => b.disabled = true);
 
     try {
-      const prompt = PROMPTS[mode](story.title, getStoryText(story));
+      const prompt = PROMPTS[mode](story.title, getStoryText(story), getCastContext(story));
       const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1216,6 +1751,20 @@ ${c || '(まだ本文が書かれていません)'}`
   }
 
   newBtn.addEventListener('click', createStory);
+  const searchInput = document.getElementById('sd-search');
+  searchInput.addEventListener('input', (e) => {
+    searchQuery = e.target.value;
+    renderList();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    const story = currentStory();
+    if (!story || !isReorderMode(story)) return;
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+      e.preventDefault();
+      if (e.shiftKey) redoReorder(story); else undoReorder(story);
+    }
+  });
 
   (async function init() {
     await loadStories();
