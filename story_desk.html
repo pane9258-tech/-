@@ -47,6 +47,37 @@
     display: flex;
     flex-direction: column;
     border-right: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    transition: width 0.25s ease, padding 0.25s ease, border-color 0.25s ease;
+  }
+  #sd-root .sidebar.collapsed {
+    width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    border-color: transparent;
+  }
+  #sd-root .sidebar > * { flex-shrink: 0; }
+  #sd-root .sidebar-edge {
+    width: 18px;
+    flex-shrink: 0;
+    border: none;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    background: var(--bg-desk-2);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  #sd-root .sidebar-edge:hover { background: var(--gold); color: #fff; }
+  #sd-root .sidebar-edge svg { width: 12px; height: 12px; transition: transform 0.25s ease; }
+  #sd-root .sidebar-edge.collapsed svg { transform: rotate(180deg); }
+  #sd-root .brand-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
   }
   #sd-root .brand {
     color: var(--paper);
@@ -58,7 +89,19 @@
     color: var(--muted-2);
     font-size: 11px;
     letter-spacing: 0.1em;
-    margin: 0 0 22px 0;
+    margin: 0;
+  }
+  #sd-root .sidebar-controls {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-top: 18px;
+    max-height: 400px;
+    transition: max-height 0.25s ease, margin-top 0.25s ease;
+  }
+  #sd-root .sidebar-controls.collapsed {
+    max-height: 0;
+    margin-top: 0;
   }
   #sd-root .new-story-btn {
     background: var(--thread);
@@ -76,6 +119,41 @@
   }
   #sd-root .new-story-btn:hover { background: var(--thread-soft); }
   #sd-root .new-story-btn:active { transform: scale(0.97); }
+
+  #sd-root .new-group-btn {
+    background: transparent;
+    color: var(--paper);
+    border: 1px dashed rgba(255,255,255,0.25);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    margin-bottom: 14px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  #sd-root .new-group-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  #sd-root .backup-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  #sd-root .backup-row button {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    border-radius: 7px;
+    padding: 6px 4px;
+    font-size: 10.5px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  #sd-root .backup-row button:hover { background: rgba(198,161,91,0.15); border-color: var(--gold); color: var(--paper); }
 
   #sd-root .search-input {
     background: rgba(255,255,255,0.06);
@@ -138,6 +216,7 @@
     background: var(--gold);
     box-shadow: 0 0 0 2px var(--bg-desk);
   }
+  #sd-root .story-card.nested::before { display: none; }
   #sd-root .story-card h3 {
     font-family: 'Shippori Mincho', serif;
     font-size: 14.5px;
@@ -182,6 +261,55 @@
     font-size: 12px;
     line-height: 1.8;
     padding: 10px 4px;
+  }
+
+  /* ---------- Groups (sidebar row) ---------- */
+  #sd-root .group-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 8px;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid transparent;
+  }
+  #sd-root .group-header:hover { background: rgba(255,255,255,0.06); }
+  #sd-root .group-header.active { border-color: var(--gold); background: rgba(198,161,91,0.1); }
+  #sd-root .group-folder-icon { width: 15px; height: 15px; color: var(--gold); flex-shrink: 0; }
+  #sd-root .group-title {
+    flex: 1;
+    color: var(--paper);
+    font-family: 'Shippori Mincho', serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #sd-root .group-count { color: var(--muted-2); font-size: 10.5px; margin-right: 2px; flex-shrink: 0; }
+  #sd-root .group-actions { display: flex; gap: 2px; opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+  #sd-root .group-header:hover .group-actions { opacity: 1; }
+  #sd-root .group-actions button {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  #sd-root .group-actions button:hover { background: rgba(255,255,255,0.12); color: var(--paper); }
+  #sd-root .group-actions svg { width: 12px; height: 12px; }
+  #sd-root .ungrouped-label {
+    color: var(--muted-2);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    margin: 6px 0 2px 2px;
   }
 
   /* ---------- Editor ---------- */
@@ -305,6 +433,128 @@
   }
   #sd-root .no-story .display { font-size: 22px; color: var(--ink); }
   #sd-root .no-story p { font-size: 13px; max-width: 280px; line-height: 1.8; margin: 0; }
+
+  /* ---------- Back to group link ---------- */
+  #sd-root .back-to-group {
+    align-self: flex-start;
+    margin: 14px 34px 0 34px;
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 12px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  #sd-root .back-to-group:hover { color: var(--thread); }
+
+  /* ---------- Group full-screen view ---------- */
+  #sd-root .group-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: var(--paper);
+  }
+  #sd-root .group-view-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 34px 16px 34px;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  #sd-root .gv-back {
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  #sd-root .gv-back:hover { color: var(--thread); }
+  #sd-root .gv-title {
+    flex: 1;
+    font-size: 22px;
+    margin: 0;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #sd-root .gv-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  #sd-root .gv-icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--paper-line);
+    background: transparent;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  #sd-root .gv-icon-btn svg { width: 15px; height: 15px; }
+  #sd-root .gv-icon-btn:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+  #sd-root .gv-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 34px 40px 34px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    align-content: start;
+  }
+  #sd-root .gv-tile {
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    border-radius: 10px;
+    padding: 16px 16px 14px 16px;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  #sd-root .gv-tile:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+  #sd-root .gv-tile h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px;
+    margin: 0;
+    color: var(--ink);
+  }
+  #sd-root .gv-tile p {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 0;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  #sd-root .gv-tile-meta { font-size: 10.5px; color: #a89f88; margin-top: auto; }
+  #sd-root .gv-add-tile {
+    border: 1px dashed #c9bd9a;
+    background: transparent;
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    min-height: 90px;
+  }
+  #sd-root .gv-add-tile:hover { border-color: var(--thread); color: var(--thread); }
+  #sd-root .gv-add-plus { font-size: 22px; line-height: 1; }
 
   /* ---------- AI toggle & drawer ---------- */
   #sd-root .ai-toggle {
@@ -449,7 +699,8 @@
     margin-bottom: 5px;
   }
   #sd-root .edit-title-input,
-  #sd-root .edit-content-input {
+  #sd-root .edit-content-input,
+  #sd-root .edit-group-select {
     width: 100%;
     border: 1px solid var(--paper-line);
     border-radius: 7px;
@@ -462,7 +713,8 @@
     background: #fff;
   }
   #sd-root .edit-title-input:focus,
-  #sd-root .edit-content-input:focus { border-color: var(--gold); }
+  #sd-root .edit-content-input:focus,
+  #sd-root .edit-group-select:focus { border-color: var(--gold); }
   #sd-root .edit-content-input { resize: vertical; line-height: 1.7; }
   #sd-root .color-swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
   #sd-root .color-swatch {
@@ -804,13 +1056,29 @@
 </style>
 
 <div id="sd-root">
-  <aside class="sidebar">
-    <p class="brand display">物語机</p>
-    <p class="brand-sub">MONOGATARI DESK</p>
-    <button class="new-story-btn" id="sd-new-btn">＋ 新しい物語をはじめる</button>
-    <input type="text" class="search-input" id="sd-search" placeholder="🔍 タイトル・セリフを検索" />
+  <aside class="sidebar" id="sd-sidebar">
+    <div class="brand-row">
+      <div>
+        <p class="brand display">物語机</p>
+        <p class="brand-sub">MONOGATARI DESK</p>
+      </div>
+    </div>
+    <div class="sidebar-controls" id="sd-sidebar-controls">
+      <button class="new-story-btn" id="sd-new-btn">＋ 新しい物語をはじめる</button>
+      <button class="new-group-btn" id="sd-new-group-btn">＋ グループを作る</button>
+      <div class="backup-row">
+        <button type="button" id="sd-backup-export" title="全データをバックアップとして書き出す">📤 書き出す</button>
+        <button type="button" id="sd-backup-import" title="バックアップファイルから読み込む">📥 読み込む</button>
+      </div>
+      <input type="file" id="sd-import-input" accept="application/json,.json" style="display:none" />
+      <input type="text" class="search-input" id="sd-search" placeholder="🔍 タイトル・セリフを検索" />
+    </div>
     <div class="story-list" id="sd-story-list"></div>
   </aside>
+
+  <button type="button" class="sidebar-edge" id="sd-sidebar-edge" title="サイドバーを隠す/表示">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
 
   <main class="editor-area" id="sd-editor-area"></main>
 </div>
@@ -823,6 +1091,7 @@
   const newBtn = document.getElementById('sd-new-btn');
 
   let stories = [];
+  let groups = [];
   let currentId = null;
   let saveTimer = null;
   let aiOpen = false;
@@ -830,6 +1099,8 @@
   let aiText = '';
   let aiErr = '';
   let searchQuery = '';
+  let currentGroupView = null;
+  const collapsedGroups = {};
 
   const CHAR_COLORS = ['#7c3f58', '#2e6f6e', '#b5651d', '#5b6eae', '#8a6d3b', '#4c7a3d', '#a0447a', '#3e6b87'];
 
@@ -845,6 +1116,12 @@
       const c = story.characters.find(ch => ch.id === line.speakerId);
       return `${c ? c.name : '？'}「${line.text || ''}」`;
     }).join('\n');
+  }
+
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = String(s == null ? '' : s);
+    return div.innerHTML;
   }
 
   function fmtDate(ts) {
@@ -887,6 +1164,17 @@
     }
   }
 
+  function normalizeStories(list) {
+    (list || []).forEach(s => {
+      if (!s.mode) s.mode = 'manuscript';
+      if (!s.characters) s.characters = [];
+      if (!s.lines) s.lines = [];
+      if (s.groupId === undefined) s.groupId = null;
+      s.characters.forEach(c => { if (c.memo === undefined) c.memo = ''; });
+    });
+    return list || [];
+  }
+
   async function loadStories() {
     try {
       const raw = await storageGet('stories');
@@ -894,25 +1182,114 @@
     } catch (e) {
       stories = [];
     }
-    stories.forEach(s => {
-      if (!s.mode) s.mode = 'manuscript';
-      if (!s.characters) s.characters = [];
-      if (!s.lines) s.lines = [];
-      s.characters.forEach(c => { if (c.memo === undefined) c.memo = ''; });
-    });
+    normalizeStories(stories);
+    try {
+      const raw = await storageGet('groups');
+      groups = raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      groups = [];
+    }
   }
 
   async function persist() {
     await storageSet('stories', JSON.stringify(stories));
   }
 
+  async function persistGroups() {
+    await storageSet('groups', JSON.stringify(groups));
+  }
+
+  function exportBackup() {
+    const data = {
+      app: 'monogatari-desk',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      stories,
+      groups
+    };
+    const d = new Date();
+    const stamp = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+    downloadFile(`monogatari-desk-backup_${stamp}.json`, JSON.stringify(data, null, 2), 'application/json');
+  }
+
+  function importBackupFile(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      let data;
+      try {
+        data = JSON.parse(reader.result);
+      } catch (e) {
+        showAlert('ファイルの読み込みに失敗したよ', '正しいバックアップファイル(.json)か確認してね');
+        return;
+      }
+      if (!data || !Array.isArray(data.stories)) {
+        showAlert('このファイルはバックアップ形式として認識できなかったよ', '「書き出す」で作ったjsonファイルを選んでね');
+        return;
+      }
+      const count = data.stories.length;
+      showConfirm(
+        `バックアップを読み込みますか？`,
+        `今この端末にある物語(${stories.length}件)は、ファイル内のデータ(${count}件)で上書きされます`,
+        async () => {
+          stories = normalizeStories(data.stories);
+          groups = Array.isArray(data.groups) ? data.groups : [];
+          currentId = null;
+          await persist();
+          await persistGroups();
+          renderList();
+          renderEditor();
+        },
+        '読み込む'
+      );
+    };
+    reader.readAsText(file);
+  }
+
+  async function createGroup(name) {
+    const group = { id: uid(), name: name || '無題のグループ', createdAt: Date.now() };
+    groups.push(group);
+    await persistGroups();
+    renderList();
+    return group;
+  }
+
   function currentStory() {
     return stories.find(s => s.id === currentId) || null;
   }
 
+  function buildStoryCard(story, nested) {
+    const card = document.createElement('div');
+    card.className = 'story-card' + (story.id === currentId ? ' active' : '') + (nested ? ' nested' : '');
+    card.innerHTML = `
+      <button class="story-edit-btn" title="タイトル・内容を編集">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 0 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.04z"/></svg>
+      </button>
+      <h3></h3>
+      <p></p>
+      <div class="meta"><span></span><button class="del-btn">削除</button></div>
+    `;
+    const preview = story.content ? story.content : getStoryText(story);
+    card.querySelector('h3').textContent = story.title || '無題の物語';
+    card.querySelector('p').textContent = preview ? preview.slice(0, 60) : 'まだ本文がありません…';
+    card.querySelector('.meta span').textContent = fmtDate(story.updatedAt);
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.del-btn') || e.target.closest('.story-edit-btn')) return;
+      selectStory(story.id);
+    });
+    card.querySelector('.story-edit-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      showEditStoryModal(story);
+    });
+    card.querySelector('.del-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteStory(story.id);
+    });
+    return card;
+  }
+
   function renderList() {
     listEl.innerHTML = '';
-    if (stories.length === 0) {
+    if (stories.length === 0 && groups.length === 0) {
       const p = document.createElement('div');
       p.className = 'empty-list';
       p.textContent = 'まだ物語がありません。上のボタンから最初の一編をはじめよう。';
@@ -934,42 +1311,79 @@
       listEl.appendChild(p);
       return;
     }
-    const sorted = [...filtered].sort((a,b) => b.updatedAt - a.updatedAt);
-    sorted.forEach(story => {
-      const card = document.createElement('div');
-      card.className = 'story-card' + (story.id === currentId ? ' active' : '');
-      card.innerHTML = `
-        <button class="story-edit-btn" title="タイトル・内容を編集">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 0 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.04z"/></svg>
-        </button>
-        <h3></h3>
-        <p></p>
-        <div class="meta"><span></span><button class="del-btn">削除</button></div>
+
+    const groupIds = new Set(groups.map(g => g.id));
+    let renderedAnyGroup = false;
+
+    groups.forEach(group => {
+      const storiesInGroup = filtered.filter(s => s.groupId === group.id);
+      if (q && storiesInGroup.length === 0) return;
+      renderedAnyGroup = true;
+
+      const isActive = currentGroupView === group.id || (currentStory() && currentStory().groupId === group.id);
+      const header = document.createElement('div');
+      header.className = 'group-header' + (isActive ? ' active' : '');
+      header.innerHTML = `
+        <svg class="group-folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span class="group-title"></span>
+        <span class="group-count"></span>
+        <div class="group-actions">
+          <button type="button" class="group-export" title="グループを書き出す">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+          <button type="button" class="group-rename" title="グループ名を編集">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+          </button>
+          <button type="button" class="group-delete" title="グループを削除">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg>
+          </button>
+        </div>
       `;
-      const preview = story.content ? story.content : getStoryText(story);
-      card.querySelector('h3').textContent = story.title || '無題の物語';
-      card.querySelector('p').textContent = preview ? preview.slice(0, 60) : 'まだ本文がありません…';
-      card.querySelector('.meta span').textContent = fmtDate(story.updatedAt);
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.del-btn') || e.target.closest('.story-edit-btn')) return;
-        selectStory(story.id);
+      header.querySelector('.group-title').textContent = group.name;
+      header.querySelector('.group-count').textContent = storiesInGroup.length + '話';
+      header.addEventListener('click', (e) => {
+        if (e.target.closest('.group-actions')) return;
+        openGroupView(group);
       });
-      card.querySelector('.story-edit-btn').addEventListener('click', (e) => {
+      header.querySelector('.group-export').addEventListener('click', (e) => {
         e.stopPropagation();
-        showEditStoryModal(story);
+        showExportMenu(e.currentTarget, exportMenuOptionsForGroup(group));
       });
-      card.querySelector('.del-btn').addEventListener('click', (e) => {
+      header.querySelector('.group-rename').addEventListener('click', (e) => {
         e.stopPropagation();
-        deleteStory(story.id);
+        showEditGroupModal(group);
       });
-      listEl.appendChild(card);
+      header.querySelector('.group-delete').addEventListener('click', (e) => {
+        e.stopPropagation();
+        deleteGroup(group);
+      });
+      listEl.appendChild(header);
     });
+
+    const ungrouped = filtered.filter(s => !s.groupId || !groupIds.has(s.groupId)).sort((a,b) => b.updatedAt - a.updatedAt);
+    if (ungrouped.length > 0) {
+      if (renderedAnyGroup) {
+        const label = document.createElement('div');
+        label.className = 'ungrouped-label';
+        label.textContent = 'グループなし';
+        listEl.appendChild(label);
+      }
+      ungrouped.forEach(story => listEl.appendChild(buildStoryCard(story, false)));
+    }
   }
 
   function selectStory(id) {
     currentId = id;
+    currentGroupView = null;
     aiText = '';
     aiErr = '';
+    renderList();
+    renderEditor();
+  }
+
+  function openGroupView(group) {
+    currentGroupView = group.id;
+    currentId = null;
     renderList();
     renderEditor();
   }
@@ -982,8 +1396,17 @@
     renderEditor();
   }
 
-  async function createStory() {
-    const story = { id: uid(), title: '', content: '', mode: 'manuscript', characters: [], lines: [], updatedAt: Date.now() };
+  async function createStory(groupId, presetTitle) {
+    const story = {
+      id: uid(),
+      title: presetTitle || '',
+      content: '',
+      mode: 'manuscript',
+      characters: [],
+      lines: [],
+      groupId: groupId || null,
+      updatedAt: Date.now()
+    };
     stories.push(story);
     currentId = story.id;
     aiText = '';
@@ -1014,6 +1437,13 @@
   function renderEditor() {
     const story = currentStory();
     if (!story) {
+      if (currentGroupView) {
+        const group = groups.find(g => g.id === currentGroupView);
+        if (group) {
+          renderGroupView(group);
+          return;
+        }
+      }
       editorArea.innerHTML = `
         <div class="no-story">
           <div class="display">まだ何も開かれていません</div>
@@ -1022,8 +1452,72 @@
       `;
       return;
     }
+    renderStoryEditor(story);
+  }
+
+  function buildEpisodeTile(story) {
+    const tile = document.createElement('div');
+    tile.className = 'gv-tile';
+    const preview = story.content ? story.content : getStoryText(story);
+    tile.innerHTML = `
+      <h3></h3>
+      <p></p>
+      <span class="gv-tile-meta"></span>
+    `;
+    tile.querySelector('h3').textContent = story.title || '無題の物語';
+    tile.querySelector('p').textContent = preview ? preview.slice(0, 70) : 'まだ本文がありません…';
+    tile.querySelector('.gv-tile-meta').textContent = fmtDate(story.updatedAt);
+    tile.addEventListener('click', () => selectStory(story.id));
+    return tile;
+  }
+
+  function renderGroupView(group) {
+    editorArea.innerHTML = `
+      <div class="group-view">
+        <div class="group-view-header">
+          <button type="button" class="gv-back" id="sd-gv-back">← 戻る</button>
+          <h2 class="gv-title display"></h2>
+          <div class="gv-actions">
+            <button type="button" class="gv-icon-btn" id="sd-gv-rename" title="グループ名を編集">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+            </button>
+            <button type="button" class="gv-icon-btn" id="sd-gv-export" title="グループを書き出す">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="gv-grid" id="sd-gv-grid"></div>
+      </div>
+    `;
+    editorArea.querySelector('.gv-title').textContent = group.name;
+
+    const episodes = getGroupEpisodesSorted(group);
+    const grid = document.getElementById('sd-gv-grid');
+    episodes.forEach(story => grid.appendChild(buildEpisodeTile(story)));
+
+    const addTile = document.createElement('button');
+    addTile.type = 'button';
+    addTile.className = 'gv-add-tile';
+    addTile.innerHTML = `<span class="gv-add-plus">＋</span><span>第${episodes.length + 1}話を追加</span>`;
+    addTile.addEventListener('click', () => createStory(group.id, `第${episodes.length + 1}話`));
+    grid.appendChild(addTile);
+
+    document.getElementById('sd-gv-back').addEventListener('click', () => {
+      currentGroupView = null;
+      renderList();
+      renderEditor();
+    });
+    document.getElementById('sd-gv-rename').addEventListener('click', () => showEditGroupModal(group));
+    document.getElementById('sd-gv-export').addEventListener('click', (e) => {
+      showExportMenu(e.currentTarget, exportMenuOptionsForGroup(group));
+    });
+  }
+
+  function renderStoryEditor(story) {
+    const parentGroup = story.groupId ? groups.find(g => g.id === story.groupId) : null;
 
     editorArea.innerHTML = `
+      ${parentGroup ? `<button type="button" class="back-to-group" id="sd-back-to-group">← ${escapeHtml(parentGroup.name)}に戻る</button>` : ''}
       <div class="editor-topbar">
         <input class="title-input" id="sd-title" placeholder="物語のタイトル" />
         <button class="export-btn" id="sd-export-btn" title="テキストファイルとして書き出す">
@@ -1058,11 +1552,15 @@
       scheduleSave();
     });
 
+    if (parentGroup) {
+      document.getElementById('sd-back-to-group').addEventListener('click', () => openGroupView(parentGroup));
+    }
+
     renderContentArea(story);
 
     document.getElementById('sd-export-btn').addEventListener('click', (e) => {
       e.stopPropagation();
-      showExportMenu(story, e.currentTarget);
+      showExportMenu(e.currentTarget, exportMenuOptionsForStory(story));
     });
 
     const drawer = document.getElementById('sd-ai-drawer');
@@ -1194,27 +1692,76 @@
     downloadFile(`${title}_台本.csv`, '\uFEFF' + csv, 'text/csv');
   }
 
-  function showExportMenu(story, anchorBtn) {
+  function extractLeadingNumber(text) {
+    const m = String(text || '').match(/\d+/);
+    return m ? parseInt(m[0], 10) : null;
+  }
+
+  function getGroupEpisodesSorted(group) {
+    const list = stories.filter(s => s.groupId === group.id);
+    return list.slice().sort((a, b) => {
+      const na = extractLeadingNumber(a.title);
+      const nb = extractLeadingNumber(b.title);
+      if (na !== null && nb !== null && na !== nb) return na - nb;
+      if (na !== null && nb === null) return -1;
+      if (na === null && nb !== null) return 1;
+      return (a.title || '').localeCompare(b.title || '', 'ja');
+    });
+  }
+
+  function exportGroupTxt(group) {
+    const episodes = getGroupEpisodesSorted(group);
+    let text = `${group.name}\n${'='.repeat(Math.min(group.name.length * 2, 40))}\n\n`;
+    episodes.forEach((story, i) => {
+      text += `\n【${story.title || `第${i + 1}話`}】\n`;
+      if (story.content) text += `（あらすじ：${story.content}）\n`;
+      text += `${getStoryText(story) || '(まだ本文が書かれていません)'}\n`;
+    });
+    downloadFile(`${group.name}_まとめ.txt`, text, 'text/plain');
+  }
+
+  function exportGroupCsv(group) {
+    const episodes = getGroupEpisodesSorted(group);
+    const rows = [['話数', 'キャラ名', 'セリフ']];
+    episodes.forEach(story => {
+      story.lines.forEach(line => {
+        const speaker = story.characters.find(c => c.id === line.speakerId);
+        rows.push([story.title || '無題の物語', speaker ? speaker.name : '？', line.text || '']);
+      });
+    });
+    const csv = rows.map(r => r.map(csvField).join(',')).join('\r\n');
+    downloadFile(`${group.name}_まとめ台本.csv`, '\uFEFF' + csv, 'text/csv');
+  }
+
+  function exportMenuOptionsForStory(story) {
+    return [
+      { title: 'テキスト形式', sub: '.txt / あらすじ・キャラ含む', handler: () => exportStoryTxt(story) },
+      { title: 'スプレッドシート用 CSV', sub: '.csv / A列:キャラ名 B列:セリフ', handler: () => exportStoryCsv(story) }
+    ];
+  }
+
+  function exportMenuOptionsForGroup(group) {
+    return [
+      { title: 'テキスト形式', sub: '.txt / 全話まとめて1ファイル', handler: () => exportGroupTxt(group) },
+      { title: 'スプレッドシート用 CSV', sub: '.csv / A:話数 B:キャラ名 C:セリフ', handler: () => exportGroupCsv(group) }
+    ];
+  }
+
+  function showExportMenu(anchorBtn, options) {
     document.querySelectorAll('.export-menu').forEach(m => m.remove());
     const menu = document.createElement('div');
     menu.className = 'export-menu';
-    menu.innerHTML = `
-      <button type="button" data-kind="txt">
-        <span class="export-menu-title">テキスト形式</span>
-        <span class="export-menu-sub">.txt / あらすじ・キャラ含む</span>
-      </button>
-      <button type="button" data-kind="csv">
-        <span class="export-menu-title">スプレッドシート用 CSV</span>
-        <span class="export-menu-sub">.csv / A列:キャラ名 B列:セリフ</span>
-      </button>
-    `;
-    menu.querySelector('[data-kind="txt"]').addEventListener('click', () => {
-      exportStoryTxt(story);
-      menu.remove();
-    });
-    menu.querySelector('[data-kind="csv"]').addEventListener('click', () => {
-      exportStoryCsv(story);
-      menu.remove();
+    options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.innerHTML = `<span class="export-menu-title"></span><span class="export-menu-sub"></span>`;
+      btn.querySelector('.export-menu-title').textContent = opt.title;
+      btn.querySelector('.export-menu-sub').textContent = opt.sub;
+      btn.addEventListener('click', () => {
+        opt.handler();
+        menu.remove();
+      });
+      menu.appendChild(btn);
     });
     root.appendChild(menu);
 
@@ -1232,6 +1779,74 @@
     setTimeout(() => document.addEventListener('click', outsideClick), 0);
   }
 
+  function showCreateGroupModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-overlay';
+    overlay.innerHTML = `
+      <div class="confirm-box edit-box">
+        <h4 class="edit-box-title">新しいグループ</h4>
+        <label class="edit-label">グループ名（例：〇〇物語シリーズ）</label>
+        <input type="text" class="edit-title-input" maxlength="40" placeholder="グループ名を入力" />
+        <div class="confirm-actions">
+          <button class="confirm-cancel" type="button">キャンセル</button>
+          <button class="confirm-save" type="button">作成する</button>
+        </div>
+      </div>
+    `;
+    const nameInput = overlay.querySelector('.edit-title-input');
+    function close() { overlay.remove(); }
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    overlay.querySelector('.confirm-cancel').addEventListener('click', close);
+    overlay.querySelector('.confirm-save').addEventListener('click', async () => {
+      const name = nameInput.value.trim();
+      if (!name) return;
+      close();
+      await createGroup(name);
+    });
+    root.appendChild(overlay);
+    nameInput.focus();
+  }
+
+  function showEditGroupModal(group) {
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-overlay';
+    overlay.innerHTML = `
+      <div class="confirm-box edit-box">
+        <h4 class="edit-box-title">グループ名を編集</h4>
+        <label class="edit-label">グループ名</label>
+        <input type="text" class="edit-title-input" maxlength="40" />
+        <div class="confirm-actions">
+          <button class="confirm-cancel" type="button">キャンセル</button>
+          <button class="confirm-save" type="button">保存する</button>
+        </div>
+      </div>
+    `;
+    const nameInput = overlay.querySelector('.edit-title-input');
+    nameInput.value = group.name;
+    function close() { overlay.remove(); }
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    overlay.querySelector('.confirm-cancel').addEventListener('click', close);
+    overlay.querySelector('.confirm-save').addEventListener('click', async () => {
+      const name = nameInput.value.trim();
+      if (name) group.name = name;
+      close();
+      await persistGroups();
+      renderList();
+    });
+    root.appendChild(overlay);
+    nameInput.focus();
+  }
+
+  function deleteGroup(group) {
+    showConfirm(`「${group.name}」というグループを削除しますか？`, '中の物語は削除されず、グループなしに戻ります', async () => {
+      groups = groups.filter(g => g.id !== group.id);
+      stories.forEach(s => { if (s.groupId === group.id) s.groupId = null; });
+      await persistGroups();
+      await persist();
+      renderList();
+    });
+  }
+
   function showEditStoryModal(story) {
     const overlay = document.createElement('div');
     overlay.className = 'confirm-overlay';
@@ -1240,6 +1855,8 @@
         <h4 class="edit-box-title">物語を編集</h4>
         <label class="edit-label">タイトル</label>
         <input type="text" class="edit-title-input" maxlength="60" />
+        <label class="edit-label">グループ</label>
+        <select class="edit-group-select"></select>
         <label class="edit-label">内容（あらすじ・メモ）</label>
         <textarea class="edit-content-input" rows="6" placeholder="この物語のあらすじやメモを書いておけるよ"></textarea>
         <div class="confirm-actions">
@@ -1250,8 +1867,21 @@
     `;
     const titleInput = overlay.querySelector('.edit-title-input');
     const contentInput = overlay.querySelector('.edit-content-input');
+    const groupSelect = overlay.querySelector('.edit-group-select');
     titleInput.value = story.title;
     contentInput.value = story.content || '';
+
+    const noneOpt = document.createElement('option');
+    noneOpt.value = '';
+    noneOpt.textContent = 'グループなし';
+    groupSelect.appendChild(noneOpt);
+    groups.forEach(g => {
+      const opt = document.createElement('option');
+      opt.value = g.id;
+      opt.textContent = g.name;
+      if (g.id === story.groupId) opt.selected = true;
+      groupSelect.appendChild(opt);
+    });
 
     function close() { overlay.remove(); }
     overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
@@ -1259,6 +1889,7 @@
     overlay.querySelector('.confirm-save').addEventListener('click', async () => {
       story.title = titleInput.value.trim();
       story.content = contentInput.value;
+      story.groupId = groupSelect.value || null;
       story.updatedAt = Date.now();
       await persist();
       close();
@@ -1327,18 +1958,21 @@
     nameInput.focus();
   }
 
-  function showConfirm(message, quote, onConfirm) {
+  function showConfirm(message, quote, onConfirm, confirmLabel) {
     const overlay = document.createElement('div');
     overlay.className = 'confirm-overlay';
+    const label = confirmLabel || '削除する';
+    const btnClass = confirmLabel ? 'confirm-save' : 'confirm-delete';
     overlay.innerHTML = `
       <div class="confirm-box">
         <p></p>
         <div class="confirm-actions">
           <button class="confirm-cancel" type="button">キャンセル</button>
-          <button class="confirm-delete" type="button">削除する</button>
+          <button class="${btnClass}" type="button"></button>
         </div>
       </div>
     `;
+    overlay.querySelector(`.${btnClass}`).textContent = label;
     const p = overlay.querySelector('p');
     p.textContent = message;
     if (quote) {
@@ -1350,10 +1984,36 @@
     function close() { overlay.remove(); }
     overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
     overlay.querySelector('.confirm-cancel').addEventListener('click', close);
-    overlay.querySelector('.confirm-delete').addEventListener('click', () => {
+    overlay.querySelector(`.${btnClass}`).addEventListener('click', () => {
       close();
       onConfirm();
     });
+    root.appendChild(overlay);
+    return;
+  }
+
+  function showAlert(message, quote) {
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-overlay';
+    overlay.innerHTML = `
+      <div class="confirm-box">
+        <p></p>
+        <div class="confirm-actions">
+          <button class="confirm-save" type="button">OK</button>
+        </div>
+      </div>
+    `;
+    const p = overlay.querySelector('p');
+    p.textContent = message;
+    if (quote) {
+      const q = document.createElement('span');
+      q.className = 'confirm-quote';
+      q.textContent = quote;
+      p.appendChild(q);
+    }
+    function close() { overlay.remove(); }
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    overlay.querySelector('.confirm-save').addEventListener('click', close);
     root.appendChild(overlay);
   }
 
@@ -1750,7 +2410,26 @@ ${c || '(まだ本文が書かれていません)'}`
     }
   }
 
-  newBtn.addEventListener('click', createStory);
+  newBtn.addEventListener('click', () => createStory());
+  const sidebarEdge = document.getElementById('sd-sidebar-edge');
+  const sidebarEl = document.getElementById('sd-sidebar');
+  sidebarEdge.addEventListener('click', () => {
+    const collapsed = sidebarEl.classList.toggle('collapsed');
+    sidebarEdge.classList.toggle('collapsed', collapsed);
+  });
+  document.getElementById('sd-new-group-btn').addEventListener('click', () => {
+    showCreateGroupModal();
+  });
+  document.getElementById('sd-backup-export').addEventListener('click', exportBackup);
+  const importInput = document.getElementById('sd-import-input');
+  document.getElementById('sd-backup-import').addEventListener('click', () => {
+    importInput.value = '';
+    importInput.click();
+  });
+  importInput.addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) importBackupFile(file);
+  });
   const searchInput = document.getElementById('sd-search');
   searchInput.addEventListener('input', (e) => {
     searchQuery = e.target.value;
