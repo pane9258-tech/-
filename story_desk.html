@@ -22,6 +22,17 @@
     --muted: #9aa3b8;
     --muted-2: #6b7488;
     --shadow: rgba(0,0,0,0.4);
+    --surface: #ffffff;
+    --surface-2: #f4efe0;
+    --surface-3: #efe8d4;
+    --placeholder-color: var(--placeholder-color);
+    --meta-color: var(--meta-color);
+    --dashed-border: #c9bd9a;
+    --disabled-surface: #ece5d2;
+    --scrollbar-thumb: #ded4b8;
+    --menu-hover: #f2ead6;
+    --line-soft: #d8cfb4;
+    --light-text: #faf6ea;
     font-family: 'Zen Kaku Gothic New', sans-serif;
     color: var(--ink);
     background: var(--bg-desk);
@@ -32,6 +43,25 @@
     display: flex;
     position: relative;
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    transition: background 0.2s ease;
+  }
+
+  #sd-root[data-theme="dark"] {
+    --paper: #262b38;
+    --paper-line: #3c4152;
+    --ink: #e9e4d6;
+    --ink-soft: #a49b89;
+    --muted-2: #8189a0;
+    --surface: #333a4a;
+    --surface-2: #232838;
+    --surface-3: #2b3040;
+    --placeholder-color: #5b6274;
+    --meta-color: #7d8494;
+    --dashed-border: #4a5062;
+    --disabled-surface: #2a2f3d;
+    --scrollbar-thumb: #454b5c;
+    --menu-hover: #3a3f4d;
+    --line-soft: #454b5c;
   }
 
   #sd-root * { box-sizing: border-box; }
@@ -73,6 +103,21 @@
   #sd-root .sidebar-edge:hover { background: var(--gold); color: #fff; }
   #sd-root .sidebar-edge svg { width: 12px; height: 12px; transition: transform 0.25s ease; }
   #sd-root .sidebar-edge.collapsed svg { transform: rotate(180deg); }
+  #sd-root .theme-toggle {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: transparent;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  #sd-root .theme-toggle svg { width: 14px; height: 14px; }
+  #sd-root .theme-toggle:hover { color: var(--gold); border-color: var(--gold); }
   #sd-root .brand-row {
     display: flex;
     align-items: flex-start;
@@ -80,7 +125,7 @@
     gap: 8px;
   }
   #sd-root .brand {
-    color: var(--paper);
+    color: var(--light-text);
     font-size: 20px;
     letter-spacing: 0.08em;
     margin: 0 0 4px 0;
@@ -105,7 +150,7 @@
   }
   #sd-root .new-story-btn {
     background: var(--thread);
-    color: var(--paper);
+    color: var(--light-text);
     border: none;
     border-radius: 8px;
     padding: 10px 14px;
@@ -122,7 +167,7 @@
 
   #sd-root .new-group-btn {
     background: transparent;
-    color: var(--paper);
+    color: var(--light-text);
     border: 1px dashed rgba(255,255,255,0.25);
     border-radius: 8px;
     padding: 8px 14px;
@@ -153,12 +198,12 @@
     cursor: pointer;
     transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
-  #sd-root .backup-row button:hover { background: rgba(198,161,91,0.15); border-color: var(--gold); color: var(--paper); }
+  #sd-root .backup-row button:hover { background: rgba(198,161,91,0.15); border-color: var(--gold); color: var(--light-text); }
 
   #sd-root .search-input {
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.1);
-    color: var(--paper);
+    color: var(--light-text);
     border-radius: 8px;
     padding: 8px 12px;
     font-size: 12px;
@@ -280,7 +325,7 @@
   #sd-root .group-folder-icon { width: 15px; height: 15px; color: var(--gold); flex-shrink: 0; }
   #sd-root .group-title {
     flex: 1;
-    color: var(--paper);
+    color: var(--light-text);
     font-family: 'Shippori Mincho', serif;
     font-size: 13.5px;
     font-weight: 600;
@@ -303,7 +348,7 @@
     justify-content: center;
     cursor: pointer;
   }
-  #sd-root .group-actions button:hover { background: rgba(255,255,255,0.12); color: var(--paper); }
+  #sd-root .group-actions button:hover { background: rgba(255,255,255,0.12); color: var(--light-text); }
   #sd-root .group-actions svg { width: 12px; height: 12px; }
   #sd-root .ungrouped-label {
     color: var(--muted-2);
@@ -345,7 +390,7 @@
     flex: 1;
     padding: 4px 2px;
   }
-  #sd-root .title-input::placeholder { color: #c8bfa5; }
+  #sd-root .title-input::placeholder { color: var(--placeholder-color); }
   #sd-root .export-btn {
     width: 32px;
     height: 32px;
@@ -386,13 +431,13 @@
     cursor: pointer;
     text-align: left;
   }
-  #sd-root .export-menu button:hover { background: #f2ead6; }
+  #sd-root .export-menu button:hover { background: var(--menu-hover); }
   #sd-root .export-menu-title { font-size: 12.5px; font-weight: 700; color: var(--ink); }
   #sd-root .export-menu-sub { font-size: 10.5px; color: var(--ink-soft); }
   #sd-root .save-state {
     font-size: 11px;
     color: var(--muted-2);
-    color: #a89f88;
+    color: var(--meta-color);
     white-space: nowrap;
   }
 
@@ -400,10 +445,6 @@
     flex: 1;
     overflow-y: auto;
     padding: 18px 34px 40px 34px;
-    background-image:
-      repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--paper-line) 31px, var(--paper-line) 32px),
-      repeating-linear-gradient(to right, transparent 0, transparent 27px, var(--paper-line) 27px, var(--paper-line) 28px);
-    background-attachment: local;
   }
   #sd-root .manuscript {
     width: 100%;
@@ -414,11 +455,11 @@
     background: transparent;
     font-family: 'Zen Kaku Gothic New', sans-serif;
     font-size: 16px;
-    line-height: 32px;
-    letter-spacing: 0.12em;
+    line-height: 1.9;
+    letter-spacing: 0.03em;
     color: var(--ink);
   }
-  #sd-root .manuscript::placeholder { color: #b8ae93; letter-spacing: 0.08em; }
+  #sd-root .manuscript::placeholder { color: var(--placeholder-color); }
 
   #sd-root .no-story {
     flex: 1;
@@ -507,7 +548,8 @@
     align-content: start;
   }
   #sd-root .gv-tile {
-    background: #fff;
+    position: relative;
+    background: var(--surface);
     border: 1px solid var(--paper-line);
     border-radius: 10px;
     padding: 16px 16px 14px 16px;
@@ -519,6 +561,26 @@
     flex-direction: column;
     gap: 6px;
   }
+  #sd-root .gv-tile-edit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(43,38,32,0.07);
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  #sd-root .gv-tile-edit svg { width: 13px; height: 13px; }
+  #sd-root .gv-tile:hover .gv-tile-edit { opacity: 1; }
+  #sd-root .gv-tile-edit:hover { background: var(--gold); color: #fff; }
   #sd-root .gv-tile:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
   #sd-root .gv-tile h3 {
     font-family: 'Shippori Mincho', serif;
@@ -536,9 +598,9 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  #sd-root .gv-tile-meta { font-size: 10.5px; color: #a89f88; margin-top: auto; }
+  #sd-root .gv-tile-meta { font-size: 10.5px; color: var(--meta-color); margin-top: auto; }
   #sd-root .gv-add-tile {
-    border: 1px dashed #c9bd9a;
+    border: 1px dashed var(--dashed-border);
     background: transparent;
     border-radius: 10px;
     padding: 16px;
@@ -601,7 +663,7 @@
   }
   #sd-root .ai-drawer-head h4 {
     font-family: 'Shippori Mincho', serif;
-    color: var(--paper);
+    color: var(--light-text);
     font-size: 16px;
     margin: 0;
   }
@@ -614,7 +676,7 @@
     line-height: 1;
     padding: 4px;
   }
-  #sd-root .ai-close:hover { color: var(--paper); }
+  #sd-root .ai-close:hover { color: var(--light-text); }
 
   #sd-root .ai-actions {
     padding: 16px 20px;
@@ -626,7 +688,7 @@
   #sd-root .ai-btn {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.1);
-    color: var(--paper);
+    color: var(--light-text);
     padding: 10px 12px;
     border-radius: 7px;
     font-size: 12.5px;
@@ -661,7 +723,7 @@
 
   #sd-root ::-webkit-scrollbar { width: 8px; }
   #sd-root ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
-  #sd-root .manuscript-wrap::-webkit-scrollbar-thumb { background: #ded4b8; }
+  #sd-root .manuscript-wrap::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); }
 
   /* ---------- Story card edit button ---------- */
   #sd-root .story-edit-btn {
@@ -710,7 +772,7 @@
     color: var(--ink);
     outline: none;
     margin-bottom: 14px;
-    background: #fff;
+    background: var(--surface);
   }
   #sd-root .edit-title-input:focus,
   #sd-root .edit-content-input:focus,
@@ -733,7 +795,7 @@
   #sd-root .composer {
     flex-shrink: 0;
     border-top: 1px solid var(--paper-line);
-    background: #f4efe0;
+    background: var(--surface-2);
     padding: 14px 34px 20px 34px;
   }
   #sd-root .composer-pills {
@@ -772,7 +834,7 @@
   #sd-root .composer-pill .pill-edit { right: 14px; background: var(--gold); color: #fff; font-size: 9px; }
   #sd-root .composer-pill:hover .pill-del,
   #sd-root .composer-pill:hover .pill-edit { display: block; }
-  #sd-root .composer-add-pill { border: 1px dashed #c9bd9a; background: transparent; color: var(--ink-soft); }
+  #sd-root .composer-add-pill { border: 1px dashed var(--dashed-border); background: transparent; color: var(--ink-soft); }
   #sd-root .composer-add-pill:hover { border-color: var(--thread); color: var(--thread); }
   #sd-root .composer-add-input {
     border: 1px solid var(--paper-line);
@@ -795,11 +857,11 @@
     font-size: 14px;
     font-family: 'Zen Kaku Gothic New', sans-serif;
     outline: none;
-    background: #fff;
+    background: var(--surface);
     color: var(--ink);
   }
   #sd-root .composer-text:focus { border-color: var(--gold); }
-  #sd-root .composer-text:disabled { background: #ece5d2; color: var(--muted-2); }
+  #sd-root .composer-text:disabled { background: var(--disabled-surface); color: var(--muted-2); }
   #sd-root .composer-send {
     width: 42px;
     height: 42px;
@@ -831,7 +893,7 @@
     display: flex;
     gap: 10px;
     align-items: flex-start;
-    border-left: 4px solid #d8cfb4;
+    border-left: 4px solid var(--line-soft);
     padding-left: 10px;
     position: relative;
   }
@@ -881,7 +943,7 @@
   #sd-root .add-line-btn {
     align-self: flex-start;
     margin-top: 6px;
-    border: 1px dashed #c9bd9a;
+    border: 1px dashed var(--dashed-border);
     background: transparent;
     color: var(--ink-soft);
     border-radius: 8px;
@@ -892,7 +954,7 @@
   }
   #sd-root .add-line-btn:hover { border-color: var(--thread); color: var(--thread); }
   #sd-root .add-line-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  #sd-root .add-line-btn:disabled:hover { border-color: #c9bd9a; color: var(--ink-soft); }
+  #sd-root .add-line-btn:disabled:hover { border-color: var(--dashed-border); color: var(--ink-soft); }
   #sd-root .script-empty {
     color: var(--ink-soft);
     font-size: 12.5px;
@@ -909,11 +971,11 @@
     gap: 12px;
     padding: 10px 34px;
     border-bottom: 1px solid var(--paper-line);
-    background: #f4efe0;
+    background: var(--surface-2);
   }
   #sd-root .write-toggle {
     display: flex;
-    background: #efe8d4;
+    background: var(--surface-3);
     border-radius: 20px;
     padding: 3px;
     flex-shrink: 0;
@@ -990,7 +1052,7 @@
     height: 24px;
     border-radius: 5px;
     border: 1px solid var(--paper-line);
-    background: #fff;
+    background: var(--surface);
     color: var(--ink-soft);
     display: flex;
     align-items: center;
@@ -1049,7 +1111,7 @@
     font-weight: 700;
     cursor: pointer;
   }
-  #sd-root .confirm-cancel { background: #efe8d4; color: var(--ink); }
+  #sd-root .confirm-cancel { background: var(--surface-3); color: var(--ink); }
   #sd-root .confirm-cancel:hover { background: #e5dcc2; }
   #sd-root .confirm-delete { background: var(--thread); color: var(--paper); }
   #sd-root .confirm-delete:hover { background: var(--thread-soft); }
@@ -1062,6 +1124,9 @@
         <p class="brand display">物語机</p>
         <p class="brand-sub">MONOGATARI DESK</p>
       </div>
+      <button type="button" class="theme-toggle" id="sd-theme-toggle" title="ライト/ダークモード切替">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+      </button>
     </div>
     <div class="sidebar-controls" id="sd-sidebar-controls">
       <button class="new-story-btn" id="sd-new-btn">＋ 新しい物語をはじめる</button>
@@ -1153,20 +1218,26 @@
       try {
         await window.storage.set(key, value, false);
       } catch (e) {
-        console.error('保存に失敗しました', e);
+        // 保存に失敗しても画面には影響しないよう、静かに無視する
       }
       return;
     }
     try {
       localStorage.setItem(STORAGE_PREFIX + key, value);
     } catch (e) {
-      console.error('保存に失敗しました', e);
+      // 保存に失敗しても画面には影響しないよう、静かに無視する
     }
   }
 
   function normalizeStories(list) {
     (list || []).forEach(s => {
-      if (!s.mode) s.mode = 'manuscript';
+      if (!s._modeMigrated) {
+        // 過去バージョンの名残でmodeが常に'manuscript'になっていたため、初回読み込み時だけリセットする
+        s.mode = 'script';
+        s._modeMigrated = true;
+      } else if (!s.mode) {
+        s.mode = 'script';
+      }
       if (!s.characters) s.characters = [];
       if (!s.lines) s.lines = [];
       if (s.groupId === undefined) s.groupId = null;
@@ -1401,11 +1472,12 @@
       id: uid(),
       title: presetTitle || '',
       content: '',
-      mode: 'manuscript',
+      mode: 'script',
       characters: [],
       lines: [],
       groupId: groupId || null,
-      updatedAt: Date.now()
+      updatedAt: Date.now(),
+      _modeMigrated: true
     };
     stories.push(story);
     currentId = story.id;
@@ -1460,6 +1532,9 @@
     tile.className = 'gv-tile';
     const preview = story.content ? story.content : getStoryText(story);
     tile.innerHTML = `
+      <button class="gv-tile-edit" title="タイトル・内容を編集">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 0 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.04z"/></svg>
+      </button>
       <h3></h3>
       <p></p>
       <span class="gv-tile-meta"></span>
@@ -1467,7 +1542,14 @@
     tile.querySelector('h3').textContent = story.title || '無題の物語';
     tile.querySelector('p').textContent = preview ? preview.slice(0, 70) : 'まだ本文がありません…';
     tile.querySelector('.gv-tile-meta').textContent = fmtDate(story.updatedAt);
-    tile.addEventListener('click', () => selectStory(story.id));
+    tile.addEventListener('click', (e) => {
+      if (e.target.closest('.gv-tile-edit')) return;
+      selectStory(story.id);
+    });
+    tile.querySelector('.gv-tile-edit').addEventListener('click', (e) => {
+      e.stopPropagation();
+      showEditStoryModal(story);
+    });
     return tile;
   }
 
@@ -1583,6 +1665,24 @@
   function renderContentArea(story) {
     const area = document.getElementById('sd-content-area');
     if (!area) return;
+
+    if (!isReorderMode(story) && story.mode === 'manuscript') {
+      area.innerHTML = `
+        <div class="reorder-toolbar" id="sd-reorder-toolbar"></div>
+        <div class="manuscript-wrap">
+          <textarea class="manuscript" id="sd-content" placeholder="ここから物語を書き始めよう…"></textarea>
+        </div>
+      `;
+      renderReorderToolbar(story);
+      const ta = document.getElementById('sd-content');
+      ta.value = story.content;
+      ta.addEventListener('input', (e) => {
+        story.content = e.target.value;
+        scheduleSave();
+      });
+      return;
+    }
+
     area.innerHTML = `
       <div class="reorder-toolbar" id="sd-reorder-toolbar"></div>
       <div class="script-wrap" id="sd-script-wrap"></div>
@@ -1600,43 +1700,58 @@
 
     const toggle = document.createElement('div');
     toggle.className = 'write-toggle';
+    const manuscriptBtn = document.createElement('button');
+    manuscriptBtn.type = 'button';
+    manuscriptBtn.textContent = '原稿';
+    manuscriptBtn.className = (!isReorderMode(story) && story.mode === 'manuscript') ? 'active' : '';
     const writeBtn = document.createElement('button');
     writeBtn.type = 'button';
     writeBtn.textContent = '書く';
-    writeBtn.className = isReorderMode(story) ? '' : 'active';
+    writeBtn.className = (!isReorderMode(story) && story.mode !== 'manuscript') ? 'active' : '';
     const reorderBtn = document.createElement('button');
     reorderBtn.type = 'button';
     reorderBtn.textContent = '並び替え';
     reorderBtn.className = isReorderMode(story) ? 'active' : '';
+    manuscriptBtn.addEventListener('click', () => {
+      reorderModeByStory[story.id] = false;
+      story.mode = 'manuscript';
+      scheduleSave();
+      renderContentArea(story);
+    });
     writeBtn.addEventListener('click', () => {
       reorderModeByStory[story.id] = false;
+      story.mode = 'script';
+      scheduleSave();
       renderContentArea(story);
     });
     reorderBtn.addEventListener('click', () => {
       reorderModeByStory[story.id] = true;
       renderContentArea(story);
     });
+    toggle.appendChild(manuscriptBtn);
     toggle.appendChild(writeBtn);
     toggle.appendChild(reorderBtn);
     bar.appendChild(toggle);
 
-    const h = getHistory(story.id);
-    const group = document.createElement('div');
-    group.className = 'undo-redo-group';
-    group.innerHTML = `
-      <button type="button" class="undo-btn" title="元に戻す (Ctrl+Z)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M3 13a9 9 0 1 0 3-7"/></svg>
-      </button>
-      <button type="button" class="redo-btn" title="やり直す (Ctrl+Shift+Z)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M21 13a9 9 0 1 1-3-7"/></svg>
-      </button>
-      ${isReorderMode(story) ? '<span class="reorder-hint">ドラッグか▲▼で並び替え</span>' : ''}
-    `;
-    group.querySelector('.undo-btn').disabled = h.undo.length === 0;
-    group.querySelector('.redo-btn').disabled = h.redo.length === 0;
-    group.querySelector('.undo-btn').addEventListener('click', () => undoReorder(story));
-    group.querySelector('.redo-btn').addEventListener('click', () => redoReorder(story));
-    bar.appendChild(group);
+    if (isReorderMode(story) || story.mode !== 'manuscript') {
+      const h = getHistory(story.id);
+      const group = document.createElement('div');
+      group.className = 'undo-redo-group';
+      group.innerHTML = `
+        <button type="button" class="undo-btn" title="元に戻す (Ctrl+Z)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M3 13a9 9 0 1 0 3-7"/></svg>
+        </button>
+        <button type="button" class="redo-btn" title="やり直す (Ctrl+Shift+Z)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M21 13a9 9 0 1 1-3-7"/></svg>
+        </button>
+        ${isReorderMode(story) ? '<span class="reorder-hint">ドラッグか▲▼で並び替え</span>' : ''}
+      `;
+      group.querySelector('.undo-btn').disabled = h.undo.length === 0;
+      group.querySelector('.redo-btn').disabled = h.redo.length === 0;
+      group.querySelector('.undo-btn').addEventListener('click', () => undoReorder(story));
+      group.querySelector('.redo-btn').addEventListener('click', () => redoReorder(story));
+      bar.appendChild(group);
+    }
   }
 
   function downloadFile(filename, content, mime) {
@@ -2231,7 +2346,7 @@
         const row = document.createElement('div');
         row.className = 'script-row reorder-row';
         row.draggable = true;
-        row.style.borderLeftColor = speaker ? speaker.color : '#d8cfb4';
+        row.style.borderLeftColor = speaker ? speaker.color : 'var(--line-soft)';
         row.innerHTML = `
           <span class="drag-handle">⋮⋮</span>
           <span class="row-speaker"></span>
@@ -2283,7 +2398,7 @@
       const speaker = story.characters.find(c => c.id === line.speakerId);
       const row = document.createElement('div');
       row.className = 'script-row';
-      row.style.borderLeftColor = speaker ? speaker.color : '#d8cfb4';
+      row.style.borderLeftColor = speaker ? speaker.color : 'var(--line-soft)';
       row.innerHTML = `
         <select class="speaker-select"></select>
         <textarea class="line-text" rows="1" placeholder="セリフを書く…"></textarea>
@@ -2436,6 +2551,25 @@ ${c || '(まだ本文が書かれていません)'}`
     renderList();
   });
 
+  let theme = 'light';
+  const ICON_SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+  const ICON_MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+  function applyThemeIcon() {
+    const svg = document.querySelector('#sd-theme-toggle svg');
+    if (!svg) return;
+    svg.innerHTML = theme === 'dark' ? ICON_SUN : ICON_MOON;
+  }
+
+  async function toggleTheme() {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', theme);
+    applyThemeIcon();
+    await storageSet('theme', theme);
+  }
+
+  document.getElementById('sd-theme-toggle').addEventListener('click', toggleTheme);
+
   document.addEventListener('keydown', (e) => {
     const story = currentStory();
     if (!story || !isReorderMode(story)) return;
@@ -2446,6 +2580,12 @@ ${c || '(まだ本文が書かれていません)'}`
   });
 
   (async function init() {
+    try {
+      const savedTheme = await storageGet('theme');
+      if (savedTheme === 'dark' || savedTheme === 'light') theme = savedTheme;
+    } catch (e) {}
+    root.setAttribute('data-theme', theme);
+    applyThemeIcon();
     await loadStories();
     if (stories.length > 0) {
       currentId = [...stories].sort((a,b) => b.updatedAt - a.updatedAt)[0].id;
